@@ -9,7 +9,14 @@ export const register = async (req, res) => {
 
     // validation
     if (!email || !password) {
-      return res.status(400).json({ msg: "All fields required" });
+  return res.status(400).json({
+    msg: "Email and password are required",
+        });
+    }
+    if (password.length < 6) {
+  return res.status(400).json({
+    msg: "Password must be at least 6 characters",
+        });
     }
 
     // check existing user
