@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
 import authRoutes from "./routes/authRoutes.js";
+import { authMiddleware } from "./middleware/authMiddleware.js";
+
 
 dotenv.config();
 
@@ -12,7 +14,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoutes);
-
+app.get("/api/protected", authMiddleware, (req, res) => {
+  res.json({
+    msg: "You accessed protected route",
+    user: req.user,
+  });
+});
 // DB connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
